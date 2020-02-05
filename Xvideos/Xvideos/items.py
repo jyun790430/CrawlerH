@@ -10,5 +10,6 @@ import scrapy
 
 class XvideosItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
+    video_url = scrapy.Field()
+    video_title = scrapy.Field()
     pass

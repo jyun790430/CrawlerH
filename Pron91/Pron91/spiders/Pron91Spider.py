@@ -49,6 +49,19 @@ class Pron91spiderSpider(scrapy.Spider):
             let source = strencode(%s, %s)
         """ % (params[0], params[1])
 
+        # JS ENCODE CONVERT PYTHON
+        # def aencode(self, input, key):
+        #     input = input.decode('base64')
+        #     _len = len(key)
+        #
+        #     code = ''
+        #     for i in range(_len):
+        #         _key = i % _len
+        #
+        #         code += chr(ord(input[i]) ^ ord(key[_key]))
+        #
+        #     return code.decode('base64')
+
         ctxt = PyV8.JSContext()
         ctxt.enter()
 

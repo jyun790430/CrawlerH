@@ -2,6 +2,7 @@
 import re
 import scrapy
 
+from Xvideos.items import XvideosItem
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 
@@ -11,13 +12,8 @@ class XvideosspiderSpider(CrawlSpider):
     domain = 'https://www.xvideos.com'
     start_urls = ['https://www.xvideos.com']
 
-    rules = (
-        # 提取匹配 'category.php' (但不匹配 'subsection.php') 的链接并跟进链接(没有callback意味着follow默认为True)
-        Rule(LinkExtractor(allow=('/new/')), callback='parse_video_page'),
-    )
-
-    # def start_requests(self):
-    #     yield scrapy.Request(url='https://www.xvideos.com', callback=self.parse_video_page)
+    def start_requests(self):
+        yield scrapy.Request(url='https://www.xvideos.com', callback=self.parse_video_page)
 
 
     def parse_video_page(self, response):
@@ -28,6 +24,11 @@ class XvideosspiderSpider(CrawlSpider):
         for href in hrefs:
             href = self.domain + href.extract()
             yield scrapy.Request(url=href, callback=self.parse_video_info)
+
+        next_url = selector.xpath('//a[@class="no-page next-page"]/@href').extract()
+
+        if next_url:
+            yield scrapy.Request(url=self.domain + next_url[0], callback=self.parse_video_page)
 
 
     def parse_video_info(self, response):
@@ -41,3 +42,9 @@ class XvideosspiderSpider(CrawlSpider):
         print(_referer)
         print(_url)
         print("------------------------------")
+
+        item = XvideosItem()
+        item['video_url'] = _url
+        item['video_title'] = 'haha'
+
+        yield item
