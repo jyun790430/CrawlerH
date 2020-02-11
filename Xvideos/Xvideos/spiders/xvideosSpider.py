@@ -3,8 +3,7 @@ import re
 import scrapy
 
 from Xvideos.items import XvideosItem
-from scrapy.spiders import CrawlSpider, Rule
-from scrapy.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider
 
 
 class XvideosspiderSpider(CrawlSpider):
@@ -43,8 +42,15 @@ class XvideosspiderSpider(CrawlSpider):
         print(_url)
         print("------------------------------")
 
-        item = XvideosItem()
-        item['video_url'] = _url
-        item['video_title'] = 'haha'
+        _meta_data = selector.xpath('//div[@class="video-metadata video-tags-list ordered-label-list cropped"]/ul/li/a/text()').extract()
+        _meta_data = _meta_data[1:-1]
+        _meta_data = ','.join(map(str, _meta_data))
+        print(_meta_data)
 
-        yield item
+
+
+        # item = XvideosItem()
+        # item['video_url'] = _url
+        # item['video_title'] = 'haha'
+        #
+        # yield item
