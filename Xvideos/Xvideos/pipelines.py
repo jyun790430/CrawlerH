@@ -28,14 +28,18 @@ class XvideosPipeline(object):
 
     def process_item(self, item, spider):
         _sql = """
-            INSERT INTO xvideos (video_title, video_url) 
-            VALUES (\"%s\", \"%s\")
+            INSERT INTO crawl_video (type, name, tags, md5_url, mp4_url, origin_url) 
+            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\",\"%s\")
         """ % (
-            item['video_title'], item['video_url']
+            item['type'], item['name'], item['tags'], item['md5_url'], item['mp4_url'], item['origin_url']
         )
+        try:
+            self.cursor.execute(_sql)
+            self.connect.commit()
+        except:
+            pass
 
-        self.cursor.execute(_sql)
-        self.connect.commit()
+        return ''
 
     def close_spider(self, spider):
         self.cursor.close()

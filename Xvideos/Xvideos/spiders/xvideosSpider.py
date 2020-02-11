@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 import re
+import md5
 import scrapy
+import prettytable as pt
 
 from Xvideos.items import XvideosItem
 from scrapy.spiders import CrawlSpider
+from setting.config import XVIDEOS_CATRGORY
 
 
-class XvideosspiderSpider(CrawlSpider):
+class Spider(CrawlSpider):
     name = 'xvideosSpider'
     domain = 'https://www.xvideos.com'
     start_urls = ['https://www.xvideos.com']
 
     def start_requests(self):
-        yield scrapy.Request(url='https://www.xvideos.com', callback=self.parse_video_page)
+
+        for category_url in XVIDEOS_CATRGORY:
+            yield scrapy.Request(url=category_url, callback=self.parse_video_page)
 
 
     def parse_video_page(self, response):
@@ -35,22 +40,38 @@ class XvideosspiderSpider(CrawlSpider):
 
         script = selector.xpath('//*[@id="video-player-bg"]/script[4]')
 
-        _url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script.extract()[0])[0]
-        _referer = response.request.headers.get('Referer', None)
-        print("------------------------------")
-        print(_referer)
-        print(_url)
-        print("------------------------------")
+        video_name = re.findall('html5player\.setVideoTitle\((\'(.*?)\')\);', script.extract()[0])[0][0][1:-1]
+        video_mp4_url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script.extract()[0])[0]
+        video_origin_url = response.url
 
-        _meta_data = selector.xpath('//div[@class="video-metadata video-tags-list ordered-label-list cropped"]/ul/li/a/text()').extract()
-        _meta_data = _meta_data[1:-1]
-        _meta_data = ','.join(map(str, _meta_data))
-        print(_meta_data)
+        hash = md5.new()
+        hash.update(video_origin_url.encode(encoding='utf-8'))
+        video_md5_url = hash.hexdigest()
 
+        # Get Tags
+        meta_data = selector.xpath('//div[@class="video-metadata video-tags-list ordered-label-list cropped"]/ul/li/a/text()').extract()
+        meta_data = meta_data[1:-1]
+        video_tags = ','.join(map(str, meta_data))
 
+        # Print Table
+        tb = pt.PrettyTable()
+        tb.field_names = ["Variable", "Content"]
+        tb.align["Variable"] = "l"
+        tb.align["Content"] = "l"
+        tb.add_row(['title', video_name])
+        tb.add_row(['md5_url', video_md5_url])
+        tb.add_row(['tags',  video_tags])
+        tb.add_row(['origin_url', video_origin_url])
+        tb.add_row(['mp4_url', video_mp4_url])
 
-        # item = XvideosItem()
-        # item['video_url'] = _url
-        # item['video_title'] = 'haha'
-        #
-        # yield item
+        print tb
+
+        item = XvideosItem()
+        item['type'] = 1
+        item['name'] = video_name
+        item['tags'] = video_tags
+        item['md5_url'] = video_md5_url
+        item['mp4_url'] = video_mp4_url
+        item['origin_url'] = video_origin_url
+
+        yield item
