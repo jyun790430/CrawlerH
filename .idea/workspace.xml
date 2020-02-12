@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b57dc200-1e1f-4b9f-b8c7-456cbc990a38" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/Setting/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Download/videos/urlconvert.py" beforeDir="false" afterPath="$PROJECT_DIR$/Download/videos/urlconvert.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebHub/WebHub/spiders/pornHubSpider.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebHub/WebHub/spiders/pornHubSpider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Xvideos/Xvideos/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/Xvideos/Xvideos/items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Xvideos/Xvideos/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/Xvideos/Xvideos/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Xvideos/Xvideos/spiders/xvideosSpider.py" beforeDir="false" afterPath="$PROJECT_DIR$/Xvideos/Xvideos/spiders/xvideosSpider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Download/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/Download/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Download/videos/download.py" beforeDir="false" afterPath="$PROJECT_DIR$/Download/videos/download.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,14 +15,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pronhubSpider.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pronhubSpider.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pronhub/Pronhub/spiders/pronhubSpider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="564">
-              <caret line="123" column="35" selection-start-line="123" selection-start-column="24" selection-end-line="123" selection-end-column="35" />
+            <state relative-caret-position="-606">
+              <caret line="77" column="35" selection-start-line="77" selection-start-column="35" selection-end-line="77" selection-end-column="35" />
               <folding>
                 <element signature="e#14#23#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urlconvert.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Download/videos/urlconvert.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="41" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -53,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/WebHub/WebHub/spiders/pornHubSpider.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
-              <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+              <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
               <folding>
                 <element signature="e#14#23#0" expanded="true" />
               </folding>
@@ -69,9 +74,22 @@
       <file leaf-file-name="download.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Download/videos/download.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="1377">
+              <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
               <folding>
                 <element signature="e#15#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Download/run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+              <folding>
+                <element signature="e#17#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,8 +98,8 @@
       <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Xvideos/Xvideos/items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+            <state relative-caret-position="238">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -127,10 +145,12 @@
         <option value="$PROJECT_DIR$/Setting/config.py" />
         <option value="$PROJECT_DIR$/Xvideos/Xvideos/items.py" />
         <option value="$PROJECT_DIR$/Xvideos/Xvideos/pipelines.py" />
-        <option value="$PROJECT_DIR$/Download/videos/urlconvert.py" />
         <option value="$PROJECT_DIR$/Xvideos/Xvideos/spiders/xvideosSpider.py" />
         <option value="$PROJECT_DIR$/WebHub/WebHub/spiders/pornHubSpider.py" />
         <option value="$PROJECT_DIR$/Pronhub/Pronhub/spiders/pronhubSpider.py" />
+        <option value="$PROJECT_DIR$/Download/videos/urlconvert.py" />
+        <option value="$PROJECT_DIR$/Download/videos/download.py" />
+        <option value="$PROJECT_DIR$/Download/run.py" />
       </list>
     </option>
   </component>
@@ -556,9 +576,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Download/run.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebHub/WebHub/pornhub_type.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -600,22 +617,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Download/videos/urlconvert.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Download/videos/download.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#15#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Xvideos/Xvideos/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="356">
@@ -635,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Xvideos/Xvideos/items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+        <state relative-caret-position="238">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -667,7 +668,7 @@
     <entry file="file://$PROJECT_DIR$/WebHub/WebHub/spiders/pornHubSpider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
           <folding>
             <element signature="e#14#23#0" expanded="true" />
           </folding>
@@ -683,10 +684,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Pronhub/Pronhub/spiders/pronhubSpider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="123" column="35" selection-start-line="123" selection-start-column="24" selection-end-line="123" selection-end-column="35" />
+        <state relative-caret-position="-606">
+          <caret line="77" column="35" selection-start-line="77" selection-start-column="35" selection-end-line="77" selection-end-column="35" />
           <folding>
             <element signature="e#14#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Download/videos/urlconvert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="41" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Download/videos/download.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
+          <folding>
+            <element signature="e#15#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Download/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+          <folding>
+            <element signature="e#17#38#0" expanded="true" />
           </folding>
         </state>
       </provider>

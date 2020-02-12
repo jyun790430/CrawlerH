@@ -8,18 +8,18 @@
 import pymysql
 
 from scrapy import Item
-from Xvideos import settings
+from setting.config import MYSQL_CONN
 
 
 class XvideosPipeline(object):
 
-
     def __init__(self):
         self.connect = pymysql.connect(
-            host=settings.MYSQL_HOST,
-            db=settings.MYSQL_DBNAME,
-            user=settings.MYSQL_USER,
-            passwd=settings.MYSQL_PASSWD,
+            host=MYSQL_CONN['host'],
+            db=MYSQL_CONN['db'],
+            user=MYSQL_CONN['user'],
+            passwd=MYSQL_CONN['passwd'],
+            port=MYSQL_CONN['port'],
             charset='utf8',
             use_unicode=True
         )
@@ -28,10 +28,10 @@ class XvideosPipeline(object):
 
     def process_item(self, item, spider):
         _sql = """
-            INSERT INTO crawl_video (type, name, tags, md5_url, mp4_url, origin_url) 
-            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\",\"%s\")
+            INSERT INTO crawl_video (type, name, tags, file_name, origin_url) 
+            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\")
         """ % (
-            item['type'], item['name'], item['tags'], item['md5_url'], item['mp4_url'], item['origin_url']
+            item['type'], item['name'], item['tags'], item['file_name'], item['origin_url']
         )
         try:
             self.cursor.execute(_sql)
@@ -68,39 +68,3 @@ class XvideosPipeline(object):
     #     post = dict(item) if isinstance(item, Item) else item
     #     collection.insert_one(post)
     #     return item
-
-
-
-#
-# # -*- coding: utf-8 -*-
-#
-# # Define your item pipelines here
-# #
-# # Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#
-# import pymongo
-# from pymongo import IndexModel, ASCENDING
-# from items import PornVideoItem
-#
-#
-# class PornhubMongoDBPipeline(object):
-#     def __init__(self):
-#         clinet = pymongo.MongoClient("localhost", 27017)
-#         db = clinet["PornHub"]
-#         self.PhRes = db["PhRes"]
-#         idx = IndexModel([('link_url', ASCENDING)], unique=True)
-#         self.PhRes.create_indexes([idx])
-#         # if your existing DB has duplicate records, refer to:
-#         # https://stackoverflow.com/questions/35707496/remove-duplicate-in-mongodb/35711737
-#
-#     def process_item(self, item, spider):
-#         print 'MongoDBItem', item
-#         """ 判断类型 存入MongoDB """
-#         if isinstance(item, PornVideoItem):
-#             print 'PornVideoItem True'
-#             try:
-#                 self.PhRes.update_one({'link_url': item['link_url']}, {'$set': dict(item)}, upsert=True)
-#             except Exception:
-#                 pass
-#         return item

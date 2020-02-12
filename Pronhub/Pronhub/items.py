@@ -9,6 +9,9 @@ import scrapy
 
 
 class PronhubItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    type = scrapy.Field()
+    name = scrapy.Field()
+    tags = scrapy.Field()
+    file_name = scrapy.Field()
+    categories = scrapy.Field()
+    origin_url = scrapy.Field()

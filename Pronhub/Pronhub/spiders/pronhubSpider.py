@@ -1,15 +1,13 @@
 #coding:utf-8
 import re
 import md5
-import json
 import time
 import js2py
-import logging
+import scrapy
 import prettytable as pt
 
-from scrapy.http import Request
-from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider
+from Pronhub.items import PronhubItem
+from scrapy.spiders import CrawlSpider
 from setting.config import PRONHUB_CATEGORY
 
 
@@ -21,17 +19,17 @@ class Spider(CrawlSpider):
     def start_requests(self):
 
         for category_url in PRONHUB_CATEGORY:
-            yield Request(url=category_url, callback=self.parse_video_page)
+            yield scrapy.Request(url=category_url, callback=self.parse_video_page)
 
 
     def parse_video_page(self, response):
-        selector = Selector(response)
+        selector = scrapy.Selector(response)
 
         divs = selector.xpath('//div[@class="phimage"]')
         for div in divs:
 
             viewkey = re.findall('viewkey=(.*?)"', div.extract())
-            yield Request(url='https://www.pornhub.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
+            yield scrapy.Request(url='https://www.pornhub.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
 
 
         url_next = selector.xpath('//li[@class="page_next"]/a/@href').extract()
@@ -43,62 +41,18 @@ class Spider(CrawlSpider):
         time.sleep(2)
 
         if url_next:
-            yield Request(url=self.host + url_next[0], callback=self.parse_video_page)
+            yield scrapy.Request(url=self.host + url_next[0], callback=self.parse_video_page)
 
 
     def parse_video_info(self, response):
 
-        selector = Selector(response)
+        selector = scrapy.Selector(response)
 
         script = selector.xpath('//script/text()').extract()
         for j in script:
 
             if 'flashvars' in j:
 
-                qualityItems = re.findall('qualityItems_\d+', j)
-
-                if len(qualityItems) <= 0:
-                    logging.debug('==================================')
-                    logging.debug('Url Can\'t Parse: ' + response.url)
-                    logging.debug('==================================')
-                    return
-                else:
-                    _video_url = qualityItems[0]
-
-                js_split = j.split('\n')
-
-                js = ''
-                for _str in js_split:
-                    if 'loadScript' in _str:
-                        if _video_url in _str:
-                            _str = re.sub(r'(loadScript.*)', '', _str)
-                            js += _str
-                        break
-                    else:
-                        js += _str
-
-                js = js + _video_url
-
-                res = js2py.eval_js(js)
-
-                if not type(res) is js2py.base.JsObjectWrapper:
-                    res = json.loads(str(res))
-                else:
-                    res = list(res)
-
-
-
-                url = ''
-                for _dict in reversed(res):
-                    if not _dict['url']:
-                        continue
-                    else:
-                        p = _dict['text']
-                        url = _dict['url']
-                        break
-
-
-                video_mp4_url = url
                 video_origin_url = response.url
 
                 hash = md5.new()
@@ -130,9 +84,18 @@ class Spider(CrawlSpider):
                 tb.add_row(['tags', video_tags])
                 tb.add_row(['categories', video_categories])
                 tb.add_row(['origin_url', video_origin_url])
-                tb.add_row(['mp4_url', video_mp4_url])
 
-                print tb
+                print "\n", tb, "\n"
+
+                item = PronhubItem()
+                item['type'] = 2
+                item['name'] = video_name
+                item['tags'] = video_tags
+                item['file_name'] = video_md5_url
+                item['origin_url'] = video_origin_url
+                item['categories'] = video_categories
+
+                yield item
 
 
 

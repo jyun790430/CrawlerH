@@ -5,7 +5,7 @@ MYSQL_CONN = {
     'db': 'crawlh',
     'user': 'root',
     'passwd': 'root',
-    'port': '3306'
+    'port': 3306
 }
 
 PRONHUB_CATEGORY = [
@@ -16,3 +16,5 @@ XVIDEOS_CATRGORY = [
     "https://www.xvideos.com/best/2020-01",
     "https://www.xvideos.com/best/2019-12"
 ]
+
+VIDEO_FILE_PATH = "/Users/bryson/videoH"

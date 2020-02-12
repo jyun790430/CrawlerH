@@ -41,7 +41,7 @@ class Spider(CrawlSpider):
         script = selector.xpath('//*[@id="video-player-bg"]/script[4]')
 
         video_name = re.findall('html5player\.setVideoTitle\((\'(.*?)\')\);', script.extract()[0])[0][0][1:-1]
-        video_mp4_url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script.extract()[0])[0]
+        #video_mp4_url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script.extract()[0])[0]
         video_origin_url = response.url
 
         hash = md5.new()
@@ -55,6 +55,7 @@ class Spider(CrawlSpider):
 
         # Print Table
         tb = pt.PrettyTable()
+        tb.set_style(pt.PLAIN_COLUMNS)
         tb.field_names = ["Variable", "Content"]
         tb.align["Variable"] = "l"
         tb.align["Content"] = "l"
@@ -62,16 +63,14 @@ class Spider(CrawlSpider):
         tb.add_row(['md5_url', video_md5_url])
         tb.add_row(['tags',  video_tags])
         tb.add_row(['origin_url', video_origin_url])
-        tb.add_row(['mp4_url', video_mp4_url])
 
-        print tb
+        print "\n", tb, "\n"
 
         item = XvideosItem()
         item['type'] = 1
         item['name'] = video_name
         item['tags'] = video_tags
-        item['md5_url'] = video_md5_url
-        item['mp4_url'] = video_mp4_url
+        item['file_name'] = video_md5_url
         item['origin_url'] = video_origin_url
 
         yield item

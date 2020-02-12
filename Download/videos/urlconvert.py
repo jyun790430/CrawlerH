@@ -1,22 +1,21 @@
 # coding=utf-8
 
-import urllib3
-
+import os
+import requests
 
 class mp4:
 
     @staticmethod
     def store(url, file_path, file_name):
-        #urllib3.disable_warnings()
-        http = urllib3.PoolManager()
-        resp = http.request('GET', url, preload_content=False)
 
-        _file = file_path + file_name + '.mp4'
+        response = requests.get(url, stream=True)
 
-        with open(_file, 'wb') as out:
-            while True:
-                data = resp.read(1024)
-                if not data:
-                    break
-                out.write(data)
-        resp.release_conn()
+        file_name += '.mp4'
+        _file = os.path.join(file_path, file_name)
+
+        handle = open(_file, 'wb')
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                handle.write(chunk)
+
+        return True

@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'Xvideos.spiders'
 #USER_AGENT = 'Xvideos (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -88,9 +88,3 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-# MYSQL SETTING
-MYSQL_HOST = '127.0.0.1'
-MYSQL_DBNAME = 'CrawlH'
-MYSQL_USER  = 'root'
-MYSQL_PASSWD = 'root'

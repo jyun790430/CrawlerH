@@ -9,10 +9,8 @@ import scrapy
 
 
 class XvideosItem(scrapy.Item):
-    # define the fields for your item here like:
     type = scrapy.Field()
     name = scrapy.Field()
     tags = scrapy.Field()
-    mp4_url = scrapy.Field()
-    md5_url = scrapy.Field()
+    file_name = scrapy.Field()
     origin_url = scrapy.Field()

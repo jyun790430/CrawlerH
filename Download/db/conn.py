@@ -3,18 +3,19 @@
 #https://www.runoob.com/python3/python-mysql-connector.html
 
 import pymysql
+from setting.config import MYSQL_CONN
 
 class db:
 
     @staticmethod
-    def cursor():
+    def conn():
         conn = pymysql.connect(
-            host='127.0.0.1',
-            port=3306,
-            user='root',
-            passwd='root',
-            db='crawlh',
+            host=MYSQL_CONN['host'],
+            port=MYSQL_CONN['port'],
+            user=MYSQL_CONN['user'],
+            passwd=MYSQL_CONN['passwd'],
+            db=MYSQL_CONN['db'],
             charset='utf8'
         )
 
-        return conn.cursor()
+        return conn
