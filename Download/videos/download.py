@@ -1,12 +1,13 @@
 # coding=utf-8
+
 import time
+import datetime
 import threading
 
 
-from db import conn
-from parse import parse
-from videos import urlconvert
-from setting.config import VIDEO_FILE_PATH
+from model  import CrawlVideoModel
+from videos import urlparse, mp4converter
+from setting.config import VIDEO_FILE_PATH, THREAD_NUM
 
 
 class Load(threading.Thread):
@@ -24,45 +25,29 @@ class Load(threading.Thread):
             if self.queue.qsize() <= 0:
 
                 if self.website == 'xvideos':
-                    _conn = conn.db.conn()
-                    cursor = _conn.cursor()
-                    cursor.execute("""
-                      SELECT id, origin_url, file_name FROM crawl_video WHERE TYPE = 1 and download = 0 LIMIT 6
-                    """)
 
-                    data = cursor.fetchall()
+                    data = CrawlVideoModel.Objects.getUnDoneDetail(1, THREAD_NUM)
 
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
+                        row[1] = urlparse.url.xvideos(_url)
 
-                        print ("x=======")
-                        print _url
-                        row[1] = parse.url.xvideos(_url)
-                        print row[1]
-                        print ("=======")
+                        CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
 
                         self.queue.put(row)
 
 
                 elif self.website == 'pronhub':
-                    _conn = conn.db.conn()
-                    cursor = _conn.cursor()
-                    cursor.execute("""
-                      SELECT id, origin_url, file_name FROM crawl_video WHERE TYPE = 2 and download = 0 LIMIT 6
-                    """)
 
-                    data = cursor.fetchall()
+                    data = CrawlVideoModel.Objects.getUnDoneDetail(2, THREAD_NUM)
 
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
+                        row[1] = urlparse.url.pronhub(_url)
 
-                        print ("p=======")
-                        print _url
-                        row[1] = parse.url.pronhub(_url)
-                        print row[1]
-                        print ("=======")
+                        CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
 
                         self.queue.put(row)
 
@@ -74,28 +59,26 @@ class Load(threading.Thread):
                 row = self.queue.get()
 
                 url = row[1]
-                file_path = VIDEO_FILE_PATH
                 file_name = row[2]
-                self.lock.acquire()
-                print ("=======")
-                print url
-                print ("=======")
-                self.lock.release()
-                # 處理資料
-                self.lock.acquire()
-                print "開始下載:" + self.website + str(file_name), "\n"
-                self.lock.release()
-                urlconvert.mp4.store(url, file_path, file_name)
-                self.lock.acquire()
-                print "下載結束:" + self.website + str(file_name), "\n"
-                self.lock.release()
+                file_path = VIDEO_FILE_PATH
 
-                _conn = conn.db.conn()
-                cursor = _conn.cursor()
-                cursor.execute("""
-                  UPDATE crawl_video SET download = 1 WHERE id = %s
-                """ % row[0])
-                _conn.commit()
+                if url:
+                    # 處理資料
+                    self._print("[%s] %s_開始下載: %s.mp4" % (datetime.datetime.now(), self.website, str(file_name)))
+                    res = mp4converter.mp4.store(url, file_path, file_name)
+                    self._print("[%s] %s_下載結束: %s.mp4" % (datetime.datetime.now(), self.website, str(file_name)))
 
+                    if res:
+                        CrawlVideoModel.Objects.updateDetail(row[0], 1, 0)
+                    else:
+                        CrawlVideoModel.Objects.updateDetail(row[0], 0, 2)
+                else:
+                    CrawlVideoModel.Objects.updateDetail(row[0], 0, 1)
 
                 time.sleep(1)
+
+    def _print(self, text):
+        self.lock.acquire()
+        print text
+        self.lock.release()
+

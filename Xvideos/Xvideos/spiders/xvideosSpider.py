@@ -4,12 +4,14 @@ import md5
 import scrapy
 import prettytable as pt
 
+
 from Xvideos.items import XvideosItem
 from scrapy.spiders import CrawlSpider
 from setting.config import XVIDEOS_CATRGORY
 
 
 class Spider(CrawlSpider):
+
     name = 'xvideosSpider'
     domain = 'https://www.xvideos.com'
     start_urls = ['https://www.xvideos.com']

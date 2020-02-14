@@ -1,7 +1,33 @@
+# coding=utf-8
 
-from parse import parse
+import re
+import js2py
+import requests
 
 
-url = parse.url.xvideos("https://video-hw.xvideos-cdn.com/videos/mp4/3/c/8/xvideos.com_3c8f0f221caf409d6d4b7de3ffb724d5.mp4?e=1581590167&ri=1024&rs=85&h=a014a3654832a3eabfa3c135d5852fc8")
+from lxml import html
+from videos import  urlparse
 
-print(url)
+import Queue as queue
+
+_queue = queue.PriorityQueue()
+_queue.put(1)
+_queue.put(2)
+
+print(list(_queue))
+print _queue.get()
+
+
+#print urlparse.url.xvideos("https://www.xvideos.com/video52408443/_")
+#print urlparse.url.pronhub("https://www.pornhub.com/view_video.php?viewkey=ph5dc1cbb37d577")
+
+
+#url = "https://www.w3school.com.cn/xpath/xpath_nodes.asp"
+# response = requests.get(url)
+# selector = html.fromstring(response.text)
+#
+# div = selector.xpath('//div[@id="course"]')
+#
+# print response.text
+# print div
+# print div[0].text

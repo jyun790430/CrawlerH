@@ -18,3 +18,5 @@ XVIDEOS_CATRGORY = [
 ]
 
 VIDEO_FILE_PATH = "/Users/bryson/videoH"
+
+THREAD_NUM = 5

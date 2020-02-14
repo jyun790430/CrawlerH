@@ -1,4 +1,5 @@
-#coding:utf-8
+# -*- coding: utf-8 -*-
+
 import re
 import md5
 import time
@@ -6,12 +7,14 @@ import js2py
 import scrapy
 import prettytable as pt
 
+
 from Pronhub.items import PronhubItem
 from scrapy.spiders import CrawlSpider
 from setting.config import PRONHUB_CATEGORY
 
 
 class Spider(CrawlSpider):
+
     name = 'pronhubSpider'
     host = 'https://cn.pornhub.com'
     start_urls = ['https://cn.pornhub.com']
