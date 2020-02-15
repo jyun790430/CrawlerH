@@ -1,73 +1,46 @@
-
-![][py2x] [![GitHub forks][forks]][network] [![GitHub stars][stars]][stargazers] [![GitHub license][license]][lic_file]
-> Disclaimer: This project is intended to study the Scrapy Spider Framework and the MongoDB database, it cannot be used for commercial or other personal intentions. If used improperly, it will be the individuals bear.
-
-* The project is mainly used for crawling a Website, the largest site in the world. In doing so it retrieves video titles, duration, mp4 link, cover url and direct Website`s url.
-* This project crawls PornHub.com quickly, but with a simple structure.
-* This project can crawl up to 5 millon Website`s videos per day, depending on your personal network. Because of my slow bandwith my results are relatively slow.
-* The crawler requests 10 threads at a time, and because of this can achieve the speed mentioned above. If your network is more performant you can request more threads and crawl a larger amount of videos per day. For the specific configuration see [pre-boot configuration]
-
+i# CrawlerH
+This project is crawl pronhub, xvideos two sites and provides video download
 
 ## Environment, Architecture
 
 Language: Python2.7
-
-Environment: MacOS, 4G RAM
-
-Database: MongoDB
-
-* Mainly uses the scrapy reptile framework.
-* Join to the Spider randomly by extracted from the Cookie pool and UA pool.
-* Start_requests start five Request based on Website`s classification, and crawl the five categories at the same time.
-* Support paging crawl data, and join to the queue.
+Database : Mysql
 
 ## Instructions for use
 
-### Pre-boot configuration
+#### Pre-boot configuration
 
-* Install MongoDB and start without configuration
-* Install Python dependent modules：Scrapy, pymongo, requests or `pip install -r requirements.txt`
-* Modify the configuration by needed, such as the interval time, the number of threads, etc.
+* Install Python dependent modules：Scrapy, pymysql, requests or `pip install -r requirements.txt`
+* Modify the configuration by needed and the config path is  `Setting/config.py`
 
-### Start up
+#### Start up
 
-* cd WebHub
-* python quickstart.py
+* python Xvideos/quickstart.py
+* python Pronhub/quickstart.py
+* python Download/run.py
 
-
-## Run screenshots
-![](https://github.com/xiyouMc/PornHubBot/blob/master/img/running.png?raw=true)
-![](https://github.com/xiyouMc/PornHubBot/blob/master/img/mongodb.png?raw=true)
 
 ## Database description
 
-The table in the database that holds the data is PhRes. The following is a field description:
+The table in the database that holds the data is `crawl_video`. The following is a table schema:
 
-#### PhRes table：
-  
-    video_title:     The title of the video, and as a unique.
-    link_url:        Video jump to Website`s link
-    image_url:       Video cover link
-    video_duration:  The length of the video, in seconds
-    quality_480p:    Video 480p mp4 download address
+#### crawl_video table schema：
 
-## For Chinese
+```
+CREATE TABLE `crawl_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` smallint(6) NOT NULL COMMENT '1:xvideos 2: pronoun ',
+  `name` text,
+  `file_name` varchar(255) NOT NULL,
+  `tags` text,
+  `categories` text,
+  `download` tinyint(4) NOT NULL DEFAULT '0',
+  `origin_url` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(4) DEFAULT '0' COMMENT '1: url 解析異常 2: url 轉檔案異常 3. 影片下載中',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_md5_url` (`file_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12250 DEFAULT CHARSET=utf8;
+```
 
-* 关注微信公众号，学习Python开发
-
-<img src="https://github.com/xiyouMc/WebHubBot/blob/master/img/gongzhonghao.png?raw=true" width = "800" height = "400" alt="图片名称" align=center />   
-
-
-
-[py2x]: https://img.shields.io/badge/python-2.x-brightgreen.svg
-[issues_img]: https://img.shields.io/github/issues/xiyouMc/WebHubBot.svg
-[issues]: https://github.com/xiyouMc/WebHubBot/issues
-
-[forks]: https://img.shields.io/github/forks/xiyouMc/WebHubBot.svg
-[network]: https://github.com/xiyouMc/WebHubBot/network
-
-[stars]: https://img.shields.io/github/stars/xiyouMc/WebHubBot.svg
-[stargazers]: https://github.com/xiyouMc/WebHubBot/stargazers
-
-[license]: https://img.shields.io/badge/license-MIT-blue.svg
-[lic_file]: https://raw.githubusercontent.com/xiyouMc/WebHubBot/master/LICENSE
