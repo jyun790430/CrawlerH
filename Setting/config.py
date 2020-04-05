@@ -12,6 +12,10 @@ PRONHUB_CATEGORY = [
     'https://cn.pornhub.com/video/search?search=%E7%A0%B4%E8%A7%A3'
 ]
 
+PRONHUBPREMIUM_CATEGORY = [
+	'https://cn.pornhubpremium.com/video?c=111&hd=1&premium=1'
+]
+
 XVIDEOS_CATRGORY = [
     "https://www.xvideos.com/best/2020-01",
     "https://www.xvideos.com/best/2019-12"
