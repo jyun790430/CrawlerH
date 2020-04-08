@@ -32,7 +32,7 @@ class Spider(CrawlSpider):
         for div in divs:
 
             viewkey = re.findall('viewkey=(.*?)"', div.extract())
-            yield scrapy.Request(url='https://www.pornhub.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
+            yield scrapy.Request(url='https://cn.pornhub.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
 
 
         url_next = selector.xpath('//li[@class="page_next"]/a/@href').extract()
