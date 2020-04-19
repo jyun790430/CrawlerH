@@ -28,10 +28,10 @@ class XvideosPipeline(object):
 
     def process_item(self, item, spider):
         _sql = """
-            INSERT INTO crawl_video (type, name, tags, file_name, origin_url) 
-            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\")
+            INSERT INTO crawl_video (type, name, tags, file_name, origin_url, unique_token) 
+            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\",\"%s\")
         """ % (
-            item['type'], item['name'], item['tags'], item['file_name'], item['origin_url']
+            item['type'], item['name'], item['tags'], item['file_name'], item['origin_url'], item['unique_token']
         )
         try:
             self.cursor.execute(_sql)

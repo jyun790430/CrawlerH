@@ -15,3 +15,4 @@ class PronhubItem(scrapy.Item):
     file_name = scrapy.Field()
     categories = scrapy.Field()
     origin_url = scrapy.Field()
+    unique_token = scrapy.Field()

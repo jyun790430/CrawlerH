@@ -1,7 +1,9 @@
 # encoding=utf-8
-import random
-from user_agents import agents
 import json
+import random
+
+from user_agents import agents
+from setting.config import PRONHUB_PREMIUM_COOKIE
 
 
 class UserAgentMiddleware(object):
@@ -23,7 +25,7 @@ class CookiesMiddleware(object):
         'FPSRN': '1',
         'performance_timing': 'home',
         'RNKEY': '40859743*68067497:1190152786:3363277230:1',
-        'il': 'v19aYAJTCXmw6FuDfvYJ5yWLX3E44qi9QfyEdTwZystL0xNTkzODgwNDYxdFpab2ozaVdEbjg0VzZDbHNlNHRETnFIM19IaXlQX1lPSnl4dzR1Tg..',
+        'il': PRONHUB_PREMIUM_COOKIE,
     }
 
     def process_request(self, request, spider):

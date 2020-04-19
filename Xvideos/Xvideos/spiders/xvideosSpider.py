@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
 import md5
+import time
 import scrapy
 import prettytable as pt
 
 
 from Xvideos.items import XvideosItem
 from scrapy.spiders import CrawlSpider
-from setting.config import XVIDEOS_CATRGORY
+from setting.config import XVIDEOS_CATRGORY, XVIDEOS_WAIT_S_NEXT_PAGE_URL, XVIDEOS_WAIT_S_NEXT_VIDEO_URL
 
 
 class Spider(CrawlSpider):
@@ -17,7 +18,6 @@ class Spider(CrawlSpider):
     start_urls = ['https://www.xvideos.com']
 
     def start_requests(self):
-
         for category_url in XVIDEOS_CATRGORY:
             yield scrapy.Request(url=category_url, callback=self.parse_video_page)
 
@@ -29,11 +29,13 @@ class Spider(CrawlSpider):
 
         for href in hrefs:
             href = self.domain + href.extract()
+            time.sleep(XVIDEOS_WAIT_S_NEXT_VIDEO_URL)
             yield scrapy.Request(url=href, callback=self.parse_video_info)
 
         next_url = selector.xpath('//a[@class="no-page next-page"]/@href').extract()
 
         if next_url:
+            time.sleep(XVIDEOS_WAIT_S_NEXT_PAGE_URL)
             yield scrapy.Request(url=self.domain + next_url[0], callback=self.parse_video_page)
 
 
@@ -74,5 +76,6 @@ class Spider(CrawlSpider):
         item['tags'] = video_tags
         item['file_name'] = video_md5_url
         item['origin_url'] = video_origin_url
+        item['unique_token'] = video_md5_url
 
         yield item

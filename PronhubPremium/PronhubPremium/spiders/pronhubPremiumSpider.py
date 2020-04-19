@@ -7,10 +7,9 @@ import js2py
 import scrapy
 import prettytable as pt
 
-
-from PronhubPremium.items import PronhubPremiumItem
 from scrapy.spiders import CrawlSpider
-from setting.config import PRONHUBPREMIUM_CATEGORY
+from PronhubPremium.items import PronhubPremiumItem
+from setting.config import PRONHUB_PREMIUM_CATEGORY, PRONHUB_PREMINUM_WAIT_S_NEXT_PAGE_URL, PRONHUB_PREMINUM_WAIT_S_NEXT_VIDEO_URL
 
 
 class Spider(CrawlSpider):
@@ -21,7 +20,7 @@ class Spider(CrawlSpider):
 
     def start_requests(self):
 
-        for category_url in PRONHUBPREMIUM_CATEGORY:
+        for category_url in PRONHUB_PREMIUM_CATEGORY:
             yield scrapy.Request(url=category_url, callback=self.parse_video_page)
 
 
@@ -32,7 +31,7 @@ class Spider(CrawlSpider):
         for div in divs:
 
             viewkey = re.findall('viewkey=(.*?)"', div.extract())
-            time.sleep(2)
+            time.sleep(PRONHUB_PREMINUM_WAIT_S_NEXT_VIDEO_URL)
             yield scrapy.Request(url='https://cn.pornhubpremium.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
 
 
@@ -42,7 +41,7 @@ class Spider(CrawlSpider):
         url_next = url_next if url_next else url_next2
 
         # Prevent 429 Status
-        time.sleep(20)
+        time.sleep(PRONHUB_PREMINUM_WAIT_S_NEXT_PAGE_URL)
 
         if url_next:
             yield scrapy.Request(url=self.host + url_next[0], callback=self.parse_video_page)
@@ -106,6 +105,7 @@ class Spider(CrawlSpider):
                 item['file_name'] = video_md5_url
                 item['origin_url'] = video_origin_url
                 item['categories'] = video_categories
+                item['unique_token'] = video_md5_url
 
                 yield item
 

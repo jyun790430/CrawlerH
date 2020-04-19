@@ -10,12 +10,14 @@ import prettytable as pt
 
 from lxml import html
 from videos.user_agents import agents
+from setting.config import XVIDEOS_COOKIE, PRONHUB_PREMIUM_COOKIE
 
 
 class Url:
 
     @staticmethod
     def pronhub(url):
+
         headers = Url.getUserAgent()
         cookies = Url.pronHubCookie()
         response = requests.get(url, headers=headers, cookies=cookies)
@@ -150,7 +152,9 @@ class Url:
 
     @staticmethod
     def xvideos(url):
-        response = requests.get(url)
+
+        cookies = Url.xvideosCookie()
+        response = requests.get(url, cookies=cookies)
         selector = html.fromstring(response.text)
 
         script = selector.xpath('//*[@id="video-player-bg"]/script[4]')
@@ -179,6 +183,17 @@ class Url:
         headers["User-Agent"] = agent
 
         return headers
+
+
+    @staticmethod
+    def xvideosCookie():
+        cookie = {
+            'session_token': XVIDEOS_COOKIE
+        }
+
+        _cookie = json.dumps(cookie)
+
+        return json.loads(_cookie)
 
 
     @staticmethod
@@ -213,7 +228,7 @@ class Url:
             'FPSRN': '1',
             'performance_timing': 'home',
             'RNKEY': '40859743*68067497:1190152786:3363277230:1',
-            'il': 'v19aYAJTCXmw6FuDfvYJ5yWLX3E44qi9QfyEdTwZystL0xNTkzODgwNDYxdFpab2ozaVdEbjg0VzZDbHNlNHRETnFIM19IaXlQX1lPSnl4dzR1Tg..',
+            'il': PRONHUB_PREMIUM_COOKIE,
         }
 
         bs = ''

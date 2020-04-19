@@ -7,7 +7,7 @@ import threading
 
 from model  import CrawlVideoModel
 from videos import urlparse, mp4converter
-from setting.config import VIDEO_FILE_PATH, THREAD_NUM
+from setting.config import VIDEO_FILE_PATH, THREAD_NUM_XVIDEOX, THREAD_NUM_PRONHUB, THREAD_NUM_PRONHUB_PREMIUM, XVIDEOS_WAIT_S_NEXT_DOWNLOAD, PRONHUB_WAIT_S_NEXT_DOWNLOAD, PRONHUB_PREMINUM_WAIT_S_NEXT_DOWNLOAD
 
 
 class Load(threading.Thread):
@@ -26,43 +26,58 @@ class Load(threading.Thread):
 
                 if self.website == 'xvideos':
 
-                    data = CrawlVideoModel.Objects.getUnDoneDetail(1, THREAD_NUM)
+                    data = CrawlVideoModel.Objects.getUnDoneDetail(1, THREAD_NUM_XVIDEOX)
 
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
                         row[1] = urlparse.Url.xvideos(_url)
+                        print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
 
                         self.queue.put(row)
 
+                    if not data:
+                        print 'stop'
+                        break
+
 
                 elif self.website == 'pronhub':
 
-                    data = CrawlVideoModel.Objects.getUnDoneDetail(2, THREAD_NUM)
+                    data = CrawlVideoModel.Objects.getUnDoneDetail(2, THREAD_NUM_PRONHUB)
 
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
                         row[1] = urlparse.Url.pronhub(_url)
+                        print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
 
                         self.queue.put(row)
 
+                    if not data:
+                        print 'stop'
+                        break
+
                 elif self.website == 'pronhubPremium':
 
-                    data = CrawlVideoModel.Objects.getUnDoneDetail(3, THREAD_NUM)
+                    data = CrawlVideoModel.Objects.getUnDoneDetail(3, THREAD_NUM_PRONHUB_PREMIUM)
 
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
                         row[1] = urlparse.Url.pronhubPremium(_url)
+                        print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
 
                         self.queue.put(row)
+
+                    if not data:
+                        print 'stop'
+                        break
 
             self.lock.release()
 
@@ -82,13 +97,18 @@ class Load(threading.Thread):
                     self._print("[%s] %s_下載結束: %s.mp4" % (datetime.datetime.now(), self.website, str(file_name)))
 
                     if res:
-                        CrawlVideoModel.Objects.updateDetail(row[0], 1, 0)
+                        CrawlVideoModel.Objects.updateDetail(row[0], 1, 0, res['fileName'])
                     else:
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 2)
                 else:
                     CrawlVideoModel.Objects.updateDetail(row[0], 0, 1)
 
-                time.sleep(1)
+                if self.website == 'xvideos':
+                    time.sleep(XVIDEOS_WAIT_S_NEXT_DOWNLOAD)
+                elif self.website == 'pronhub':
+                    time.sleep(XVIDEOS_WAIT_S_NEXT_DOWNLOAD)
+                elif self.website == 'pronhubPremium':
+                    time.sleep(PRONHUB_PREMINUM_WAIT_S_NEXT_DOWNLOAD)
 
     def _print(self, text):
         self.lock.acquire()

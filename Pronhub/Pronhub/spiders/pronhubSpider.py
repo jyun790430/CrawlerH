@@ -10,7 +10,7 @@ import prettytable as pt
 
 from Pronhub.items import PronhubItem
 from scrapy.spiders import CrawlSpider
-from setting.config import PRONHUB_CATEGORY
+from setting.config import PRONHUB_CATEGORY, PRONHUB_WAIT_S_NEXT_PAGE_URL, PRONHUB_WAIT_S_NEXT_VIDEO_URL
 
 
 class Spider(CrawlSpider):
@@ -30,8 +30,8 @@ class Spider(CrawlSpider):
 
         divs = selector.xpath('//div[@class="phimage"]')
         for div in divs:
-
             viewkey = re.findall('viewkey=(.*?)"', div.extract())
+            time.sleep(PRONHUB_WAIT_S_NEXT_VIDEO_URL)
             yield scrapy.Request(url='https://cn.pornhub.com/view_video.php?viewkey=%s' % viewkey[0], callback=self.parse_video_info)
 
 
@@ -41,7 +41,7 @@ class Spider(CrawlSpider):
         url_next = url_next if url_next else url_next2
 
         # Prevent 429 Status
-        time.sleep(2)
+        time.sleep(PRONHUB_WAIT_S_NEXT_PAGE_URL)
 
         if url_next:
             yield scrapy.Request(url=self.host + url_next[0], callback=self.parse_video_page)
@@ -97,6 +97,7 @@ class Spider(CrawlSpider):
                 item['file_name'] = video_md5_url
                 item['origin_url'] = video_origin_url
                 item['categories'] = video_categories
+                item['unique_token'] = video_md5_url
 
                 yield item
 

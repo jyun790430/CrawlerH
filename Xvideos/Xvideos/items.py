@@ -14,3 +14,4 @@ class XvideosItem(scrapy.Item):
     tags = scrapy.Field()
     file_name = scrapy.Field()
     origin_url = scrapy.Field()
+    unique_token = scrapy.Field()
