@@ -18,9 +18,9 @@ from videos import  urlparse
 # print _queue.get()
 
 
-#print urlparse.url.xvideos("https://www.xvideos.com/video52408443/_")
+#print urlparse.Url.xvideos("https://www.xvideos.com/video52408443/_")
 print urlparse.Url.pronhub("https://www.pornhub.com/view_video.php?viewkey=ph5dc1cbb37d577")
-print urlparse.Url.pronhubPremium("https://www.pornhubpremium.com/view_video.php?viewkey=863826900")
+#print urlparse.Url.pronhubPremium("https://www.pornhubpremium.com/view_video.php?viewkey=863826900")
 
 
 #url = "https://www.w3school.com.cn/xpath/xpath_nodes.asp"

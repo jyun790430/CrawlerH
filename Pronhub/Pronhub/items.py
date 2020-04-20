@@ -12,6 +12,7 @@ class PronhubItem(scrapy.Item):
     type = scrapy.Field()
     name = scrapy.Field()
     tags = scrapy.Field()
+    duration = scrapy.Field()
     file_name = scrapy.Field()
     categories = scrapy.Field()
     origin_url = scrapy.Field()

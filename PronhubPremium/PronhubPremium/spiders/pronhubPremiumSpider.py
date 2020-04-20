@@ -9,7 +9,7 @@ import prettytable as pt
 
 from scrapy.spiders import CrawlSpider
 from PronhubPremium.items import PronhubPremiumItem
-from setting.config import PRONHUB_PREMIUM_CATEGORY, PRONHUB_PREMINUM_WAIT_S_NEXT_PAGE_URL, PRONHUB_PREMINUM_WAIT_S_NEXT_VIDEO_URL
+from setting.config import PRONHUB_PREMIUM_CATEGORY, PRONHUB_PREMINUM_WAIT_S_NEXT_PAGE_URL, PRONHUB_PREMINUM_WAIT_S_NEXT_VIDEO_URL, DOWNLOAD_DURATION
 
 
 class Spider(CrawlSpider):
@@ -62,6 +62,11 @@ class Spider(CrawlSpider):
                 hash.update(video_origin_url.encode(encoding='utf-8'))
                 video_md5_url = hash.hexdigest()
 
+                duration = 0
+                durationContent = selector.xpath('//meta[@property="video:duration"]/@content').extract()
+                if durationContent:
+                    duration = int(durationContent[0])
+
                 video_name = selector.xpath('//div[@id="main-container"]/@data-video-title').extract()
                 #video_name = selector.xpath('//div[@class="videoTitle"]/span/text()').extract()
                 if not video_name :
@@ -91,6 +96,7 @@ class Spider(CrawlSpider):
                 tb.align["Variable"] = "l"
                 tb.align["Content"] = "l"
                 tb.add_row(['title', video_name])
+                tb.add_row(['duration', duration])
                 tb.add_row(['md5_url', video_md5_url])
                 tb.add_row(['tags', video_tags])
                 tb.add_row(['categories', video_categories])
@@ -98,16 +104,19 @@ class Spider(CrawlSpider):
 
                 print "\n", tb, "\n"
 
-                item = PronhubPremiumItem()
-                item['type'] = 3
-                item['name'] = video_name
-                item['tags'] = video_tags
-                item['file_name'] = video_md5_url
-                item['origin_url'] = video_origin_url
-                item['categories'] = video_categories
-                item['unique_token'] = video_md5_url
+                if duration <= DOWNLOAD_DURATION:
 
-                yield item
+                    item = PronhubPremiumItem()
+                    item['type'] = 3
+                    item['name'] = video_name
+                    item['tags'] = video_tags
+                    item['duration'] = duration
+                    item['file_name'] = video_md5_url
+                    item['origin_url'] = video_origin_url
+                    item['categories'] = video_categories
+                    item['unique_token'] = video_md5_url
+
+                    yield item
 
 
 

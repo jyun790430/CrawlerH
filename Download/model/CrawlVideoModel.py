@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from model import conn
-from setting.config import SERVER_ID
+from setting.config import SERVER_ID, DOWNLOAD_DURATION
 
 class Objects:
 
@@ -20,8 +20,9 @@ class Objects:
                 TYPE = %s
                 AND download =  0
                 AND status = 0
+                AND duration <= %s
             LIMIT %s
-        """ % (type, limit))
+        """ % (type, DOWNLOAD_DURATION, limit))
 
         data = cursor.fetchall()
         _conn.close()
@@ -42,6 +43,9 @@ class Objects:
         """ % (download, status, SERVER_ID, id)
 
         sql = sql.replace("file_name", ", file_name=\"" + fileName + "\"" if fileName else "")
+
+        if fileName:
+            sql = sql + " , is_transfer = 1"
 
         cursor.execute(sql)
         _conn.commit()

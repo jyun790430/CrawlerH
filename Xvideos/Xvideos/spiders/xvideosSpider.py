@@ -8,7 +8,7 @@ import prettytable as pt
 
 from Xvideos.items import XvideosItem
 from scrapy.spiders import CrawlSpider
-from setting.config import XVIDEOS_CATRGORY, XVIDEOS_WAIT_S_NEXT_PAGE_URL, XVIDEOS_WAIT_S_NEXT_VIDEO_URL
+from setting.config import XVIDEOS_CATRGORY, XVIDEOS_WAIT_S_NEXT_PAGE_URL, XVIDEOS_WAIT_S_NEXT_VIDEO_URL, DOWNLOAD_DURATION
 
 
 class Spider(CrawlSpider):
@@ -48,6 +48,27 @@ class Spider(CrawlSpider):
         #video_mp4_url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script.extract()[0])[0]
         video_origin_url = response.url
 
+        duration = 0
+        duration_string = selector.xpath('//h2[@class="page-title"]/span/text()').extract()
+
+        if duration_string:
+            duration_string = duration_string[0].split()
+            _dsec = 0
+            for d in duration_string:
+                d = str(d)
+                if str.isdigit(d):
+                    _dsec = int(d)
+                    continue
+
+                switcher = {
+                    'h': 60 * 60,
+                    'min': 60,
+                    'sec': 1
+                }
+                _sec = switcher.get(d, None)
+                if _sec:
+                    duration += _dsec * _sec
+
         hash = md5.new()
         hash.update(video_origin_url.encode(encoding='utf-8'))
         video_md5_url = hash.hexdigest()
@@ -64,18 +85,22 @@ class Spider(CrawlSpider):
         tb.align["Variable"] = "l"
         tb.align["Content"] = "l"
         tb.add_row(['title', video_name])
+        tb.add_row(['duration', duration])
         tb.add_row(['md5_url', video_md5_url])
         tb.add_row(['tags',  video_tags])
         tb.add_row(['origin_url', video_origin_url])
 
         print "\n", tb, "\n"
 
-        item = XvideosItem()
-        item['type'] = 1
-        item['name'] = video_name
-        item['tags'] = video_tags
-        item['file_name'] = video_md5_url
-        item['origin_url'] = video_origin_url
-        item['unique_token'] = video_md5_url
+        if duration <= DOWNLOAD_DURATION:
 
-        yield item
+            item = XvideosItem()
+            item['type'] = 1
+            item['name'] = video_name
+            item['tags'] = video_tags
+            item['duration'] = duration
+            item['file_name'] = video_md5_url
+            item['origin_url'] = video_origin_url
+            item['unique_token'] = video_md5_url
+
+            yield item

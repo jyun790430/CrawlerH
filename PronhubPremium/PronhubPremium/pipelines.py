@@ -28,10 +28,10 @@ class PronhubPremiumPipeline(object):
 
     def process_item(self, item, spider):
         _sql = """
-            INSERT INTO crawl_video (type, name, tags, categories, file_name, origin_url, unique_token) 
-            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\",\"%s\",\"%s\")
+            INSERT INTO crawl_video (type, name, tags, categories, file_name, origin_url, unique_token, duration) 
+            VALUES (\"%s\", \"%s\",\"%s\", \"%s\",\"%s\",\"%s\",\"%s\",\"%s\")
         """ % (
-            item['type'], item['name'], item['tags'], item['categories'], item['file_name'], item['origin_url'], item['unique_token']
+            item['type'], item['name'], item['tags'], item['categories'], item['file_name'], item['origin_url'], item['unique_token'], item['duration']
         )
         try:
             self.cursor.execute(_sql)

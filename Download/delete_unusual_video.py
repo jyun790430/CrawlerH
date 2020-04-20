@@ -12,7 +12,7 @@ for k, row in enumerate(data):
     filename += '.mp4'
     filepath = VIDEO_FILE_PATH
 
-    _file = os.path.isfile(filepath, filename)
+    _file = os.path.join(filepath, filename)
 
     if os.path.isfile(_file):
         print 'exists'

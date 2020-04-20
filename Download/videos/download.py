@@ -31,7 +31,8 @@ class Load(threading.Thread):
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
-                        row[1] = urlparse.Url.xvideos(_url)
+                        data = urlparse.Url.xvideos(_url)
+                        row[1] = data['url']
                         print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
@@ -50,7 +51,8 @@ class Load(threading.Thread):
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
-                        row[1] = urlparse.Url.pronhub(_url)
+                        data = urlparse.Url.pronhub(_url)
+                        row[1] = data['url']
                         print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)
@@ -68,7 +70,8 @@ class Load(threading.Thread):
                     for k, row in enumerate(data):
                         row = list(row)
                         _url = row[1]
-                        row[1] = urlparse.Url.pronhubPremium(_url)
+                        data = urlparse.Url.pronhubPremium(_url)
+                        row[1] = data['url']
                         print row
 
                         CrawlVideoModel.Objects.updateDetail(row[0], 0, 3)

@@ -15,6 +15,7 @@ class mp4:
                 content_type = response.headers['content-type']
                 extension = mimetypes.guess_extension(content_type)
 
+                extension = ".mp4"
                 file_name += extension
                 _file = os.path.join(file_path, file_name)
 

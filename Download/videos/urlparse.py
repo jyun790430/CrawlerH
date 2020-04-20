@@ -29,6 +29,11 @@ class Url:
 
             if 'flashvars' in j:
 
+                duration = 0
+                durationContent = selector.xpath('//meta[@property="video:duration"]/@content')
+                if durationContent:
+                    duration = int(durationContent[0])
+
                 qualityItems = re.findall('qualityItems_\d+', j)
 
                 if len(qualityItems) <= 0:
@@ -77,7 +82,10 @@ class Url:
                         url = _dict['url']
                         break
 
-                return url
+                return {
+                    'url': url,
+                    'duration': duration
+                }
 
         return None
 
@@ -95,6 +103,13 @@ class Url:
         for j in script:
 
             if 'flashvars' in j:
+
+                duration = 0
+                durationContent = selector.xpath('//meta[@property="video:duration"]/@content')
+                if durationContent:
+                    duration = int(durationContent[0])
+
+                script = selector.xpath('//meta[@id="video-player-bg"]/script[4]')
 
                 qualityItems = re.findall('qualityItems_\d+', j)
 
@@ -145,7 +160,10 @@ class Url:
                         url = _dict['url']
                         break
 
-                return url
+                return {
+                    'url': url,
+                    'duration': duration
+                }
 
         return None
 
@@ -158,6 +176,27 @@ class Url:
         selector = html.fromstring(response.text)
 
         script = selector.xpath('//*[@id="video-player-bg"]/script[4]')
+
+        duration = 0
+        duration_string = selector.xpath('//h2[@class="page-title"]/span/text()')
+
+        if duration_string:
+            duration_string = duration_string[0].split()
+            _dsec = 0
+            for d in duration_string:
+                if str.isdigit(d):
+                    _dsec = int(d)
+                    continue
+
+                switcher = {
+                    'h': 60 * 60,
+                    'min': 60,
+                    'sec': 1
+                }
+                _sec = switcher.get(d, None)
+                if _sec:
+                    duration += _dsec * _sec
+
 
         if len(script) <= 0:
             # Print Error
@@ -173,7 +212,10 @@ class Url:
         _url = re.findall('html5player\.setVideoUrlHigh\(\'(.*?)\'\);', script[0].text)
         _url = _url[0] if len(_url) > 0 else None
 
-        return _url
+        return {
+            'url': _url,
+            'duration': duration
+        }
 
 
     @staticmethod
