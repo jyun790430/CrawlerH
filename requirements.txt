@@ -21,7 +21,7 @@ PyDispatcher==2.0.5       # via scrapy
 pyopenssl==17.0.0         # via scrapy, service-identity
 queuelib==1.4.2           # via scrapy
 requests==2.18.1
-Scrapy==1.4.0
+Scrapy==1.8.1
 service-identity==17.0.0  # via scrapy
 six==1.10.0               # via automat, cryptography, parsel, pyopenssl, scrapy, w3lib
 Twisted==17.5.0           # via scrapy
